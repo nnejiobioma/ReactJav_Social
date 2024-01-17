@@ -1,45 +1,49 @@
-// import { UserButton } from "@clerk/nextjs";
+import React from "react";
+import type { Metadata } from "next";
+import { Inter } from "next/font/google";
+import { ClerkProvider } from "@clerk/nextjs";
+import { dark } from "@clerk/themes";
 
-// export default function Home() {
-//   return (
-//     <div>
-//       <UserButton afterSignOutUrl="/"/>
-//     </div>
-//   )
-// }
+import "../globals.css";
+import LeftSidebar from "@/components/shared/LeftSidebar";
+import Bottombar from "@/components/shared/Bottombar";
+import RightSidebar from "@/components/shared/RightSidebar";
+import Topbar from "@/components/shared/Topbar";
 
+const inter = Inter({ subsets: ["latin"] });
 
-import {
-  ClerkProvider,
-  SignedIn,
-  SignedOut,
-  SignInButton,
-  UserButton,
-} from "@clerk/nextjs";
- 
-function Header() {
+export const metadata: Metadata = {
+  title: "Threads",
+  description: "A Next.js 13 Meta Threads application",
+};
+
+export default function RootLayout({
+  children,
+}: {
+  children: React.ReactNode;
+}) {
   return (
-    <header style={{ display: "flex", justifyContent: "space-between", padding: 20 }}>
-      <h1>My App</h1>
-      <SignedIn>
-        {/* Mount the UserButton component */}
-        <UserButton />
-      </SignedIn>
-      <SignedOut>
-        {/* Signed out users get sign in button */}
-        <SignInButton/>
-      </SignedOut>
-    </header>
-  );
-}
- 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return (
-    <html lang="en">
-      <ClerkProvider>
-        <Header />
-        {children}
-      </ClerkProvider>
-    </html>
+    <ClerkProvider
+      appearance={{
+        baseTheme: dark,
+      }}
+    >
+      <html lang='en'>
+        <body className={inter.className}>
+          <Topbar />
+
+          <main className='flex flex-row'>
+            <LeftSidebar />
+            <section className='main-container'>
+              <div className='w-full max-w-4xl'>{children}</div>
+            </section>
+            {/* @ts-ignore */}
+            <RightSidebar />
+          </main>
+
+          <Bottombar />
+        </body>
+      </html>
+    </ClerkProvider>
   );
 }
