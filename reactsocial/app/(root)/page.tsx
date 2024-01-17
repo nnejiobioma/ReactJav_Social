@@ -1,11 +1,45 @@
+// import { UserButton } from "@clerk/nextjs";
 
-export default function Home() {
+// export default function Home() {
+//   return (
+//     <div>
+//       <UserButton afterSignOutUrl="/"/>
+//     </div>
+//   )
+// }
+
+
+import {
+  ClerkProvider,
+  SignedIn,
+  SignedOut,
+  SignInButton,
+  UserButton,
+} from "@clerk/nextjs";
+ 
+function Header() {
   return (
-    <main>
-      <h1>
-        ReactJav
-      </h1>
-     
-    </main>
-  )
+    <header style={{ display: "flex", justifyContent: "space-between", padding: 20 }}>
+      <h1>My App</h1>
+      <SignedIn>
+        {/* Mount the UserButton component */}
+        <UserButton />
+      </SignedIn>
+      <SignedOut>
+        {/* Signed out users get sign in button */}
+        <SignInButton/>
+      </SignedOut>
+    </header>
+  );
+}
+ 
+export default function RootLayout({ children }: { children: React.ReactNode }) {
+  return (
+    <html lang="en">
+      <ClerkProvider>
+        <Header />
+        {children}
+      </ClerkProvider>
+    </html>
+  );
 }
